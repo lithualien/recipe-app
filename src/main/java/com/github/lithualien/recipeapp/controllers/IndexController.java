@@ -3,8 +3,11 @@ package com.github.lithualien.recipeapp.controllers;
 import com.github.lithualien.recipeapp.domain.Category;
 import com.github.lithualien.recipeapp.domain.UnitOfMeasure;
 import com.github.lithualien.recipeapp.repository.CategoryRepository;
+import com.github.lithualien.recipeapp.repository.RecipeRepository;
 import com.github.lithualien.recipeapp.repository.UnitOfMeasureRepository;
+import com.github.lithualien.recipeapp.service.RecipeService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
@@ -12,26 +15,18 @@ import java.util.Optional;
 @Controller
 public class IndexController {
 
-    private final CategoryRepository categoryRepository;
-    private final UnitOfMeasureRepository uomRepository;
+    private final RecipeService recipeService;
 
-    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository uomRepository) {
-        this.categoryRepository = categoryRepository;
-        this.uomRepository = uomRepository;
+    public IndexController(RecipeService recipeService) {
+
+        this.recipeService = recipeService;
     }
 
     @RequestMapping( {"", "/", "/index"} )
-    public String getIndexPage() {
+    public String getIndexPage(Model model) {
 
-        Optional<Category> categoryOptional =
-                categoryRepository.findByDescription("American");
+        model.addAttribute("recipes", recipeService.getRecipes());
 
-        Optional<UnitOfMeasure> uomOptional =
-                uomRepository.findByDescription("Teaspoon");
-
-        System.out.println("Cat id is: " + categoryOptional.get().getId());
-
-        System.out.println("UOM id is: " + uomOptional.get().getId());
 
         return "index";
     }
