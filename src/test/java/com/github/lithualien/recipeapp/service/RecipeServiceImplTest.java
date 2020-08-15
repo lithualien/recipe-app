@@ -4,8 +4,11 @@ import com.github.lithualien.recipeapp.domain.Recipe;
 import com.github.lithualien.recipeapp.repository.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -13,15 +16,16 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class RecipeServiceImplTest {
 
     private static final Long ID = 1L;
 
-    @InjectMocks
-    private RecipeServiceImpl service;
-
     @Mock
     private RecipeRepository repository;
+
+    @InjectMocks
+    private RecipeServiceImpl service;
 
     @BeforeEach
     void setUp() {

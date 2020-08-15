@@ -1,36 +1,32 @@
 package com.github.lithualien.recipeapp.controllers;
 
 import com.github.lithualien.recipeapp.domain.Recipe;
-import com.github.lithualien.recipeapp.repository.RecipeRepository;
 import com.github.lithualien.recipeapp.service.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import javax.swing.*;
-
 import java.util.HashSet;
 import java.util.Set;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ExtendWith(MockitoExtension.class)
 class RecipeControllerTest {
 
     @Mock
-    private RecipeRepository controller;
+    private RecipeService service;
 
     @InjectMocks
-    private RecipeService service;
+    private RecipeController controller;
 
     private MockMvc mockmvc;
 
@@ -68,15 +64,16 @@ class RecipeControllerTest {
     @Test
     public void getShowPage() throws Exception {
         Long id = 1L;
-        Recipe recipe = new Recipe();
-        recipe.setId(id);
+        Recipe returnedRecipe = new Recipe();
+        returnedRecipe.setId(id);
 
-        when(service.findById(anyLong())).thenReturn(recipe);
+        when(service.findById(anyLong())).thenReturn(returnedRecipe);
 
+        Recipe recipe = service.findById(id);
         mockmvc
-                .perform(get("/recipes/1"))
+                .perform(get("/recipes/show/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipes/show"))
-                .andExpect(model().attribute("recipe", hasSize(1)));
+                .andExpect(model().attribute("recipe", recipe));
     }
 }
