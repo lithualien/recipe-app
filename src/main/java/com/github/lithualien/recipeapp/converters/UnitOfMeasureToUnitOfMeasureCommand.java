@@ -9,8 +9,17 @@ import org.springframework.stereotype.Component;
 public class UnitOfMeasureToUnitOfMeasureCommand implements Converter<UnitOfMeasure, UnitOfMeasureCommand> {
 
     @Override
-    public UnitOfMeasureCommand convert(UnitOfMeasure unitOfMeasure) {
-        return null;
+    public UnitOfMeasureCommand convert(UnitOfMeasure source) {
+
+        if (source == null) {
+            return null;
+        }
+
+        final UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand();
+        uomCommand.setId(source.getId());
+        uomCommand.setDescription(source.getDescription());
+        return uomCommand;
+
     }
 
 }
