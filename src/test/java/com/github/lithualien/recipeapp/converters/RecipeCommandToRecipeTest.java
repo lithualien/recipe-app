@@ -4,15 +4,10 @@ import com.github.lithualien.recipeapp.commands.CategoryCommand;
 import com.github.lithualien.recipeapp.commands.IngredientCommand;
 import com.github.lithualien.recipeapp.commands.NotesCommand;
 import com.github.lithualien.recipeapp.commands.RecipeCommand;
-import com.github.lithualien.recipeapp.domain.Category;
-import com.github.lithualien.recipeapp.domain.Ingredient;
-import com.github.lithualien.recipeapp.domain.Notes;
 import com.github.lithualien.recipeapp.domain.Recipe;
 import com.github.lithualien.recipeapp.domain.enums.Difficulty;
-import javafx.scene.chart.CategoryAxis;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.xmlunit.diff.Diff;
 
 import java.util.HashSet;
 import java.util.Set;
