@@ -1,5 +1,7 @@
 package com.github.lithualien.recipeapp.service;
 
+import com.github.lithualien.recipeapp.commands.RecipeCommand;
+import com.github.lithualien.recipeapp.converters.*;
 import com.github.lithualien.recipeapp.domain.Recipe;
 import com.github.lithualien.recipeapp.repository.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +24,7 @@ class RecipeServiceImplTest {
     private static final Long ID = 1L;
     private static final String DESCRIPTION = "Description";
     private static final Integer PREP_TIME = Integer.valueOf("5");
+    private RecipeToRecipeCommand recipeToRecipeCommand;
 
     @Mock
     private RecipeRepository repository;
@@ -31,6 +34,10 @@ class RecipeServiceImplTest {
 
     @BeforeEach
     void setUp() {
+        recipeToRecipeCommand = new RecipeToRecipeCommand(
+                new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand()),
+                new NotesToNotesCommand(),
+                new CategoryToCategoryCommand());
     }
 
     @Test
@@ -68,23 +75,4 @@ class RecipeServiceImplTest {
         assertThrows(NoSuchElementException.class, () -> service.findById(ID));
     }
 
-    @Test
-    void save() {
-        // given
-        Recipe recipe = new Recipe();
-        recipe.setId(ID);
-        recipe.setDescription(DESCRIPTION);
-        recipe.setPrepTime(PREP_TIME);
-
-        // when
-        when(repository.save(recipe)).thenReturn(recipe);
-        Recipe savedRecipe = service.save(recipe);
-
-        // then
-        assertNotNull(savedRecipe);
-        assertEquals(ID, savedRecipe);
-        assertEquals(DESCRIPTION, savedRecipe.getDescription());
-        assertEquals(PREP_TIME, savedRecipe.getPrepTime());
-
-    }
 }
