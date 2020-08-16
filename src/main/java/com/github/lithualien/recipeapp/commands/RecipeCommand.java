@@ -1,6 +1,5 @@
 package com.github.lithualien.recipeapp.commands;
 
-import com.github.lithualien.recipeapp.domain.Category;
 import com.github.lithualien.recipeapp.domain.enums.Difficulty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +21,9 @@ public class RecipeCommand implements Serializable {
     private String source;
     private String url;
     private String directions;
-    private Set<IngredientCommand> ingredients = new HashSet<>();
+    private Set<IngredientCommand> ingredientCommands = new HashSet<>();
     private Difficulty difficulty;
     private NotesCommand notesCommand;
-    private Set<Category> categories = new HashSet<>();
+    private Set<CategoryCommand> categoryCommands = new HashSet<>();
 
 }
