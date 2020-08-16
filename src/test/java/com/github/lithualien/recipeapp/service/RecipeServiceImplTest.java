@@ -20,6 +20,8 @@ import static org.mockito.Mockito.*;
 class RecipeServiceImplTest {
 
     private static final Long ID = 1L;
+    private static final String DESCRIPTION = "Description";
+    private static final Integer PREP_TIME = Integer.valueOf("5");
 
     @Mock
     private RecipeRepository repository;
@@ -64,5 +66,25 @@ class RecipeServiceImplTest {
     @Test
     void findByIdNotFound() {
         assertThrows(NoSuchElementException.class, () -> service.findById(ID));
+    }
+
+    @Test
+    void save() {
+        // given
+        Recipe recipe = new Recipe();
+        recipe.setId(ID);
+        recipe.setDescription(DESCRIPTION);
+        recipe.setPrepTime(PREP_TIME);
+
+        // when
+        when(repository.save(recipe)).thenReturn(recipe);
+        Recipe savedRecipe = service.save(recipe);
+
+        // then
+        assertNotNull(savedRecipe);
+        assertEquals(ID, savedRecipe);
+        assertEquals(DESCRIPTION, savedRecipe.getDescription());
+        assertEquals(PREP_TIME, savedRecipe.getPrepTime());
+
     }
 }
