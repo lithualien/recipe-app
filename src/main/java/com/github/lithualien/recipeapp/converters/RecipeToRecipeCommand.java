@@ -6,6 +6,7 @@ import com.github.lithualien.recipeapp.commands.NotesCommand;
 import com.github.lithualien.recipeapp.commands.RecipeCommand;
 import com.github.lithualien.recipeapp.domain.Ingredient;
 import com.github.lithualien.recipeapp.domain.Recipe;
+import com.github.lithualien.recipeapp.domain.enums.Difficulty;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -35,6 +36,13 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
 
         final NotesCommand notesCommand = notesConverter.convert(source.getNotes());
         final RecipeCommand recipeCommand = new RecipeCommand();
+        Difficulty difficulty;
+
+        if (source.getDifficulty() == null) {
+            difficulty = Difficulty.EASY;
+        } else {
+            difficulty = source.getDifficulty();
+        }
 
         recipeCommand.setId(source.getId());
         recipeCommand.setDescription(source.getDescription());
@@ -44,7 +52,7 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         recipeCommand.setSource(source.getSource());
         recipeCommand.setUrl(source.getUrl());
         recipeCommand.setDirections(source.getDirections());
-        recipeCommand.setDifficulty(source.getDifficulty());
+        recipeCommand.setDifficulty(difficulty);
         recipeCommand.setNotesCommand(notesCommand);
 
         if ((source.getCategories() != null) && ( source.getCategories().size() > 0)) {

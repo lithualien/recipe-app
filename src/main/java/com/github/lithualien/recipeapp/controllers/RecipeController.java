@@ -1,11 +1,11 @@
 package com.github.lithualien.recipeapp.controllers;
 
+import com.github.lithualien.recipeapp.commands.RecipeCommand;
 import com.github.lithualien.recipeapp.service.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -19,21 +19,42 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @RequestMapping( {"", "/", "/index"} )
+    @GetMapping( {"", "/", "/index"} )
     public String getIndexPage(Model model) {
 
         log.debug("Getting index page.");
         model.addAttribute("recipes", recipeService.getRecipes());
 
-        return "recipes/index";
+        return "recipes/recipe-index";
     }
 
-    @RequestMapping( {"/show/{id}"})
+    @GetMapping( {"/show/{id}"} )
     public String showById(@PathVariable("id") Long id, Model model) {
 
         log.debug("Getting recipe id = " + id);
 
         model.addAttribute("recipe", recipeService.findById(id));
-        return "recipes/show";
+        return "recipes/show-recipe";
     }
+
+    @GetMapping( {"/new"} )
+    public String showRecipeForm(Model model) {
+
+        log.debug("Loaded new recipe form.");
+
+        model.addAttribute("recipe", new RecipeCommand());
+
+        return "recipes/recipe-form";
+    }
+
+    @PostMapping
+    public String saveOrUpdateRecipe(@ModelAttribute RecipeCommand recipeCommand) {
+
+        RecipeCommand savedRecipeCommand = recipeService.save(recipeCommand);
+
+        log.debug("Saved new recipe of id " + savedRecipeCommand.getId());
+
+        return "redirect:/recipes/show/" + savedRecipeCommand.getId();
+    }
+
 }

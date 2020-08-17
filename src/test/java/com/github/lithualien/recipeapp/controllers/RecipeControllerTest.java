@@ -1,6 +1,8 @@
 package com.github.lithualien.recipeapp.controllers;
 
+import com.github.lithualien.recipeapp.commands.RecipeCommand;
 import com.github.lithualien.recipeapp.domain.Recipe;
+import com.github.lithualien.recipeapp.domain.enums.Difficulty;
 import com.github.lithualien.recipeapp.service.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,7 +60,7 @@ class RecipeControllerTest {
         mockmvc
                 .perform(get("/recipes"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("recipes/index"))
+                .andExpect(view().name("recipes/recipe-index"))
                 .andExpect(model().attribute("recipes", hasSize(2)));
     }
 
@@ -73,7 +76,15 @@ class RecipeControllerTest {
         mockmvc
                 .perform(get("/recipes/show/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("recipes/show"))
+                .andExpect(view().name("recipes/recipe-index"))
                 .andExpect(model().attribute("recipe", recipe));
+    }
+
+    @Test
+    public void testShowForm() throws Exception {
+        mockmvc
+                .perform(get("/recipes/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipes/recipe-form"));
     }
 }
