@@ -10,12 +10,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.HashSet;
 import java.util.Set;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -74,9 +76,9 @@ class RecipeControllerTest {
 
         Recipe recipe = service.findById(id);
         mockmvc
-                .perform(get("/recipes/show/1"))
+                .perform(get("/recipes/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("recipes/recipe-index"))
+                .andExpect(view().name("recipes/show-recipe"))
                 .andExpect(model().attribute("recipe", recipe));
     }
 
@@ -87,4 +89,35 @@ class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipes/recipe-form"));
     }
+
+//    @Test
+//    public void testPostNewRecipeForm() throws Exception {
+//        RecipeCommand recipeCommand = new RecipeCommand();
+//        recipeCommand.setId(2L);
+//
+//        when(service.save(any())).thenReturn(recipeCommand);
+//
+//        mockmvc.perform(post("/recipes")
+//                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+//                .param("id", "")
+//                .param("description", "some string")
+//        )
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(view().name("redirect:/recipes/2/show"));
+//    }
+
+    @Test
+    public void testUpdateRecipe() throws Exception {
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(2L);
+
+        when(service.findCommandById(any())).thenReturn(recipeCommand);
+
+        mockmvc.perform(get("/recipes/2/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipes/recipe-form"))
+                .andExpect(model().attributeExists("recipe"));
+    }
+
+
 }

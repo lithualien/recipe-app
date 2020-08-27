@@ -31,7 +31,7 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
         if (source == null) {
             return null;
-        }
+        }   
 
         final Notes notes = notesConverter.convert(source.getNotesCommand());
         final Recipe recipe = new Recipe();

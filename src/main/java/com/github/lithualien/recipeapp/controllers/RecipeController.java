@@ -1,6 +1,7 @@
 package com.github.lithualien.recipeapp.controllers;
 
 import com.github.lithualien.recipeapp.commands.RecipeCommand;
+import com.github.lithualien.recipeapp.domain.Recipe;
 import com.github.lithualien.recipeapp.service.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class RecipeController {
         return "recipes/recipe-index";
     }
 
-    @GetMapping( {"/show/{id}"} )
+    @GetMapping( {"/{id}/show"} )
     public String showById(@PathVariable("id") Long id, Model model) {
 
         log.debug("Getting recipe id = " + id);
@@ -54,7 +55,14 @@ public class RecipeController {
 
         log.debug("Saved new recipe of id " + savedRecipeCommand.getId());
 
-        return "redirect:/recipes/show/" + savedRecipeCommand.getId();
+        return "redirect:/recipes/{id}/show/" + savedRecipeCommand.getId();
+    }
+
+    @RequestMapping("/{id}/update")
+    public String updateRecipe(@PathVariable("id") Long id, Model model) {
+        RecipeCommand recipe = recipeService.findCommandById(id);
+        model.addAttribute("recipe", recipe);
+        return "recipes/recipe-form";
     }
 
 }
