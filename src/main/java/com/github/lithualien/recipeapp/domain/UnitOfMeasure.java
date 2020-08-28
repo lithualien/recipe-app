@@ -4,7 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "unit_of_measure")
 public class UnitOfMeasure {

@@ -58,19 +58,6 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    void findById() {
-        Recipe returnedRecipe = new Recipe();
-        returnedRecipe.setId(ID);
-
-        when(repository.findById(anyLong())).thenReturn(Optional.of(returnedRecipe));
-
-        Recipe recipe = service.findById(ID);
-
-        assertNotNull(recipe.getId());
-        assertEquals(ID, recipe.getId());
-    }
-
-    @Test
     void findByIdNotFound() {
         assertThrows(NoSuchElementException.class, () -> service.findById(ID));
     }

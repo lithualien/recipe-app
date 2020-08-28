@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-md-9">
                             <ul>
-                                <li th:each="category : ${recipe.categories}"
+                                <li th:each="category : ${recipe.categoryCommands}"
                                     th:text="${category.getDescription()}"></li>
                             </ul>
                         </div>
@@ -81,7 +81,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <ul>
-                                <li th:each="ingredient : ${recipe.ingredients}"
+                                <li th:each="ingredient : ${recipe.ingredientCommands}"
                                     th:text="${ingredient.amount + ' ' + ingredient.uom.description + ' ' + ingredient.description}"></li>
                             </ul>
                         </div>
@@ -108,7 +108,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <p th:text="${recipe.notes.recipeNotes}"></p>
+                            <p th:text="${recipe.notesCommand.recipeNotes}"></p>
                         </div>
                     </div>
                 </div>

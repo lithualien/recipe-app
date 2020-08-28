@@ -41,20 +41,12 @@ public class RecipeServiceImpl implements RecipeService {
         return recipes;
     }
 
-    @Override
-    public Recipe findById(Long id) {
-        log.debug("Returning recipe id = " + id);
-        return recipeRepository
-                .findById(id)
-                .<NoSuchElementException>orElseThrow(() -> {
-                    throw new NoSuchElementException("Recipe with id = " + id + " does not exist.");
-                });
-    }
-
     @Transactional
     @Override
-    public RecipeCommand findCommandById(Long id) {
-        return recipeToRecipeCommand.convert(findById(id));
+    public RecipeCommand findById(Long id) {
+        log.debug("Returning recipe id = " + id);
+        Recipe recipe = getRecipe(id);
+        return recipeToRecipeCommand.convert(recipe);
     }
 
     @Transactional
@@ -63,5 +55,13 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipe = recipeCommandToRecipe.convert(recipeCommand);
         Recipe savedRecipe = recipeRepository.save(recipe);
         return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    private Recipe getRecipe(Long id) {
+        return recipeRepository
+                .findById(id)
+                .<NoSuchElementException>orElseThrow(() -> {
+                    throw new NoSuchElementException("Recipe with id = " + id + " does not exist.");
+                });
     }
 }

@@ -1,13 +1,16 @@
 package com.github.lithualien.recipeapp.domain;
 
 import com.github.lithualien.recipeapp.domain.enums.Difficulty;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "recipes")
 public class Recipe {

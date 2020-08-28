@@ -69,12 +69,12 @@ class RecipeControllerTest {
     @Test
     public void getShowPage() throws Exception {
         Long id = 1L;
-        Recipe returnedRecipe = new Recipe();
+        RecipeCommand returnedRecipe = new RecipeCommand();
         returnedRecipe.setId(id);
 
         when(service.findById(anyLong())).thenReturn(returnedRecipe);
 
-        Recipe recipe = service.findById(id);
+        RecipeCommand recipe = service.findById(id);
         mockmvc
                 .perform(get("/recipes/1/show"))
                 .andExpect(status().isOk())
@@ -90,28 +90,28 @@ class RecipeControllerTest {
                 .andExpect(view().name("recipes/recipe-form"));
     }
 
-//    @Test
-//    public void testPostNewRecipeForm() throws Exception {
-//        RecipeCommand recipeCommand = new RecipeCommand();
-//        recipeCommand.setId(2L);
-//
-//        when(service.save(any())).thenReturn(recipeCommand);
-//
-//        mockmvc.perform(post("/recipes")
-//                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//                .param("id", "")
-//                .param("description", "some string")
-//        )
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(view().name("redirect:/recipes/2/show"));
-//    }
+    @Test
+    public void testPostNewRecipeForm() throws Exception {
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(2L);
+
+        when(service.save(any())).thenReturn(recipeCommand);
+
+        mockmvc.perform(post("/recipes")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "")
+                .param("description", "some string")
+        )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/recipes/2/show/"));
+    }
 
     @Test
     public void testUpdateRecipe() throws Exception {
         RecipeCommand recipeCommand = new RecipeCommand();
         recipeCommand.setId(2L);
 
-        when(service.findCommandById(any())).thenReturn(recipeCommand);
+        when(service.findById(any())).thenReturn(recipeCommand);
 
         mockmvc.perform(get("/recipes/2/update"))
                 .andExpect(status().isOk())
