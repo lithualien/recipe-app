@@ -55,14 +55,20 @@ public class RecipeController {
 
         log.debug("Saved new recipe of id " + savedRecipeCommand.getId());
 
-        return "redirect:/recipes/" + savedRecipeCommand.getId() + "/show/";
+        return "redirect:/recipes/" + savedRecipeCommand.getId() + "/show";
     }
 
-    @RequestMapping("/{id}/update")
+    @GetMapping("/{id}/update")
     public String updateRecipe(@PathVariable("id") Long id, Model model) {
         RecipeCommand recipe = recipeService.findById(id);
         model.addAttribute("recipe", recipe);
         return "recipes/recipe-form";
+    }
+
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable("id") Long id) {
+        recipeService.delete(id);
+        return "redirect:/recipes";
     }
 
 }

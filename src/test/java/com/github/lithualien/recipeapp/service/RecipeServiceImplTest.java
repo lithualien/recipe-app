@@ -62,4 +62,12 @@ class RecipeServiceImplTest {
         assertThrows(NoSuchElementException.class, () -> service.findById(ID));
     }
 
+    @Test
+    public void testDeleteRecipe() {
+        Long id = 2L;
+        service.delete(id);
+
+        verify(repository, times(1)).deleteById(id);
+    }
+
 }
